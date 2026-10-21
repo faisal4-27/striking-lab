@@ -1,0 +1,45 @@
+[project]
+name = "striking-lab"
+version = "0.1.0"
+description = "ML soccer-shot analyzer: pose + ball tracking + biomechanics scoring"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.30",
+    "python-multipart>=0.0.9",
+    "sqlmodel>=0.0.22",
+    "numpy>=1.26,<3",
+    "scipy>=1.13",
+    "opencv-python>=4.10",
+    "torch>=2.5",
+    "torchvision>=0.20",
+    "ultralytics>=8.3",
+    "rtmlib>=0.0.13",
+    "onnxruntime-gpu>=1.19",
+    "lightgbm>=4.5",
+    "pandas>=2.2",
+    "pyarrow>=17",
+    "scikit-learn>=1.5",
+    "pyyaml>=6",
+    "lap>=0.5",
+    "mediapipe>=1.1.1",
+]
+
+[dependency-groups]
+dev = ["pytest>=8", "httpx>=0.27"]
+
+[tool.uv]
+package = false
+
+[tool.uv.sources]
+torch = [{ index = "pytorch-cu130" }]
+torchvision = [{ index = "pytorch-cu130" }]
+
+[[tool.uv.index]]
+name = "pytorch-cu130"
+url = "https://download.pytorch.org/whl/cu130"
+explicit = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

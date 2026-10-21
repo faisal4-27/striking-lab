@@ -1,0 +1,13 @@
+# Python
+__pycache__/
+*.pyc
+backend/.venv/
+.pytest_cache/
+
+# Runtime data and downloaded/trained models (large, personal)
+backend/data/
+backend/models/
+
+# Frontend
+frontend/node_modules/
+frontend/dist/

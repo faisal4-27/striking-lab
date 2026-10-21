@@ -1,0 +1,243 @@
+# Instep drive ("laces") rule set.
+#
+# Each rule turns one measured feature into a 0-100 subscore:
+#   inside `ideal`            -> 100
+#   `tolerance` outside ideal -> 50, falling off smoothly (Gaussian) beyond.
+# `weight` sets its influence on the group score. `low` / `high` hold the
+# feedback shown when the value is below / above the ideal range.
+# Units: *_deg degrees, plant/head/knee/follow/momentum in leg lengths,
+# foot speed m/s, ball speed km/h.
+
+group_weights: {technique: 0.6, outcome: 0.4}
+
+rules:
+  - feature: approach_angle_deg
+    label: Approach angle
+    group: technique
+    aspect: approach
+    weight: 0.5
+    ideal: [25, 50]
+    tolerance: 15
+    unit: "°"
+    low:
+      issue: Your run-up is almost straight behind the ball.
+      tip: Start 3–5 steps back at roughly 30–45° to the line of the shot. The angle lets your hips open and your kicking leg swing through freely with a locked ankle.
+    high:
+      issue: Your run-up comes in from too wide an angle.
+      tip: Narrow the approach to about 30–45°. Approaching from very wide tends to drag the ball across your body.
+
+  - feature: plant_fore_aft
+    label: Plant foot position
+    group: technique
+    aspect: plant
+    weight: 1.2
+    ideal: [-0.25, 0.1]
+    tolerance: 0.15
+    unit: " leg"
+    low:
+      issue: Your plant foot lands behind the ball.
+      tip: Plant your standing foot level with the ball, about a foot-width to the side, toes pointing at the target. Planting behind makes you lean back and lift the shot.
+    high:
+      issue: Your plant foot lands ahead of the ball.
+      tip: Lengthen your last stride slightly so the standing foot lands level with the ball. Planting ahead cramps the swing and makes you stab down at it.
+
+  - feature: plant_knee_flex_deg
+    label: Standing knee bend
+    group: technique
+    aspect: plant
+    weight: 0.8
+    ideal: [15, 45]
+    tolerance: 12
+    unit: "°"
+    low:
+      issue: Your standing leg is too straight at contact.
+      tip: Soften the standing knee as you plant, as if sitting slightly into it. A flexed knee lowers your centre of mass for balance and lets the hips drive through.
+    high:
+      issue: Your standing knee collapses at contact.
+      tip: Plant more firmly. Single-leg squats and lunges build the strength to hold a stable base under a powerful swing.
+
+  - feature: backswing_knee_flex_deg
+    label: Backswing (knee load)
+    group: technique
+    aspect: strike
+    weight: 1.0
+    ideal: [80, 130]
+    tolerance: 20
+    unit: "°"
+    low:
+      issue: Your backswing is short, so the kicking leg isn't loaded.
+      tip: On the last stride, let your heel come up toward your backside, like drawing a bow. More knee bend gives the lower leg room to snap through the ball.
+    high:
+      issue: Your kicking leg folds more than it needs to.
+      tip: Over-folding wastes time and can mistime the strike. Aim for a strong but controlled backswing.
+
+  - feature: backswing_thigh_deg
+    label: Hip extension
+    group: technique
+    aspect: strike
+    weight: 0.6
+    ideal: [10, 45]
+    tolerance: 12
+    unit: "°"
+    low:
+      issue: Your kicking thigh barely goes behind your body, so the swing comes only from the knee.
+      tip: Swing from the hip. As you plant, let the kicking thigh travel back behind you so the whole leg whips forward.
+    high:
+      issue: You over-arch on the backswing.
+      tip: Keep the backswing compact. Too much hip extension makes it hard to get your knee over the ball in time.
+
+  - feature: trunk_lean_deg
+    label: Body over the ball
+    group: technique
+    aspect: body_shape
+    weight: 1.3
+    ideal: [-2, 20]
+    tolerance: 8
+    unit: "°"
+    low:
+      issue: You're leaning back at contact, the classic cause of shots flying over the bar.
+      tip: Keep your chest over the ball, with shoulders slightly ahead of your hips as you strike. Think "nose over the ball".
+    high:
+      issue: You're bent too far forward at contact.
+      tip: Lean forward a little, not a lot. Over-bending tends to top the ball and cuts your hip drive.
+
+  - feature: ankle_lock_deg
+    label: Ankle locked, toe down
+    group: technique
+    aspect: strike
+    weight: 1.2
+    ideal: [140, 180]
+    tolerance: 15
+    unit: "°"
+    low:
+      issue: Your ankle isn't locked at contact, so the toe is up or the foot is loose.
+      tip: Point your toe down and lock your ankle before the swing. Strike with the laces, the hard bone on top of the foot. A loose ankle leaks power and sprays the ball.
+
+  - feature: foot_speed_mps
+    label: Foot speed at contact
+    group: technique
+    aspect: power
+    weight: 1.0
+    ideal: [16, 40]
+    tolerance: 5
+    unit: " m/s"
+    low:
+      issue: Your foot is moving slowly through the ball.
+      tip: Power comes from the hips and the snap of the knee. Accelerate *through* the ball rather than *into* it, and make sure your foot is still speeding up at contact.
+
+  - feature: arm_balance_deg
+    label: Balance arm
+    group: technique
+    aspect: body_shape
+    weight: 0.5
+    ideal: [40, 120]
+    tolerance: 20
+    unit: "°"
+    low:
+      issue: The arm opposite your kicking leg stays tucked in.
+      tip: Swing the opposite arm out wide as you plant. It counter-balances the leg swing and keeps your shoulders square.
+    high:
+      issue: Your balance arm is thrown up very high.
+      tip: Bring the arm out to the side, about shoulder height, rather than straight up.
+
+  - feature: follow_through_height
+    label: Follow-through
+    group: technique
+    aspect: follow_through
+    weight: 0.7
+    ideal: [-0.4, 1.5]
+    tolerance: 0.3
+    unit: " leg"
+    low:
+      issue: Your follow-through is short, so the leg stops at the ball.
+      tip: Kick through the ball and let your kicking leg finish toward the target. Stopping at contact means you were slowing down before you hit it.
+
+  - feature: momentum_forward
+    label: Moving through the shot
+    group: technique
+    aspect: follow_through
+    weight: 0.8
+    ideal: [0.2, 3.0]
+    tolerance: 0.2
+    unit: " leg"
+    low:
+      issue: Your weight stays back after the strike.
+      tip: Land on your kicking foot after the shot. Your momentum should carry you forward past where the ball was.
+
+  - feature: head_over_ball
+    label: Head position
+    group: technique
+    aspect: body_shape
+    weight: 0.6
+    ideal: [-0.4, 0.3]
+    tolerance: 0.2
+    unit: " leg"
+    low:
+      issue: Your head is behind the ball at contact.
+      tip: Keep your head steady and over the ball, with your eyes on the contact point until the ball has gone.
+    high:
+      issue: Your head is too far ahead of the ball.
+      tip: Stay tall over the ball rather than lunging at it.
+
+  - feature: knee_over_ball
+    label: Knee over the ball
+    group: technique
+    aspect: body_shape
+    weight: 0.9
+    ideal: [-0.15, 0.5]
+    tolerance: 0.15
+    unit: " leg"
+    low:
+      issue: Your kicking knee is behind the ball at contact, so the shot will rise.
+      tip: Get your kicking knee over the ball as you strike. Knee over ball keeps a driven shot low and hard.
+
+  - feature: ball_speed_kmh
+    label: Ball speed
+    group: outcome
+    aspect: power
+    weight: 1.5
+    ideal: [85, 200]
+    tolerance: 25
+    unit: " km/h"
+    low:
+      issue: The shot lacked pace.
+      tip: Pace comes from clean laces contact and fast foot speed, not from effort. Fix the technique items above and the speed follows. Strike through the centre of the ball.
+
+  - feature: launch_angle_deg
+    label: Launch angle
+    group: outcome
+    aspect: accuracy
+    weight: 1.0
+    ideal: [0, 15]
+    tolerance: 8
+    unit: "°"
+    low:
+      issue: You drove the ball into the ground.
+      tip: Strike through the middle of the ball, not the top half. Make sure your plant foot isn't too far ahead.
+    high:
+      issue: The ball climbed too steeply for a driven shot.
+      tip: Lean over the ball and strike its middle with your knee over it. Contact below the middle, or leaning back, sends it high.
+
+  - feature: direction_error_deg
+    label: Direction to target
+    group: outcome
+    aspect: accuracy
+    weight: 1.2
+    ideal: [0, 6]
+    tolerance: 8
+    unit: "°"
+    high:
+      issue: The shot went off line from the target.
+      tip: Point your standing foot's toes and your hips at the target, and keep your ankle locked through contact. Direction mostly comes from where the plant foot and hips face.
+
+  - feature: on_target
+    label: On target
+    group: outcome
+    aspect: accuracy
+    weight: 1.5
+    ideal: [1, 1]
+    tolerance: 0.5
+    unit: ""
+    low:
+      issue: The shot missed the target.
+      tip: Accuracy before power. Practise at 70% effort with perfect technique until you hit the target consistently, then add pace.
